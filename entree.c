@@ -211,6 +211,14 @@ void traiter(char *commande, int *protocole)
     )
     {
     }
+    else if (!strcmp(arg0, "board"))
+    {
+      afficherPosition(enCours.posAct, 1);
+    }
+    else if (!strcmp(arg0, "moves"))
+    {
+      chercherCoups(&enCours.posAct, 1);
+    }
     else // Serait-ce un coup ?
     {
       struct Coup c;

@@ -34,7 +34,7 @@ void *rechercher(struct Position *p);
 typedef int EvalFunc[10];	    // valeurs des paramètres
 
 struct MVar alphabeta(struct Position p, int profondeur, int niveau, short a, short b);
-void chercherCoups(struct Position * p);
+void chercherCoups(struct Position * p, int affich);
 short evalStat(struct Position p);
 
 #define MAT 32000    // équivalent au mat.

@@ -49,17 +49,17 @@ void envoi(char *message)
   journal("<- ", message, "\n", 1);
 }
 
-void afficherPosition(struct Position p)
+void afficherPosition(struct Position p, int affich)
 {
-  int i, j;
+  int x, y;
   char c;
-  char s[512] = "** +=====================+\n";
+  char s[512] = "** @== A B C D E F G H ==@\n";
   
-  for (i = r8 + 1; i >= r1 - 1; i--)
+  for (y = r8 + 1; y >= r1 - 1; y--)
   {
-    for (j = A - 1; j <= H + 1; j++)
+    for (x = A - 1; x <= H + 1; x++)
     {
-      switch (abs(p.diagramme[j][i]))
+      switch (abs(p.diagramme[x][y]))
       {
         case PION:     c = 'P'; break;
         case CAVALIER: c = 'C'; break;
@@ -67,38 +67,41 @@ void afficherPosition(struct Position p)
         case TOUR:     c = 'T'; break;
         case DAME:     c = 'D'; break;
         case ROI:      c = 'R'; break;
-        case VIDE:     c = '.';
+        case VIDE:     c = (((x + y) % 2 == 1) ? '.' : ':');
       }
-      if (p.diagramme[j][i] < 0 && isalpha(c))
+      if (p.diagramme[x][y] < 0 && isalpha(c))
       {
         c = tolower(c);
       }
-      if (p.diagramme[j][i] == EXTERIEUR)
+      if (p.diagramme[x][y] == EXTERIEUR)
       {
         c = '$';
       }
-      if (j == A - 1)
-        sprintf(s + strlen(s), "**");
-      if ((j == A - 1 || j == H + 1) && (i == r8 + 1 || i == r1 - 1))
-        sprintf(s + strlen(s), " |");
-      else if (j == A - 1 || j == H + 1)
-        sprintf(s + strlen(s), " %c", i + 48);
-      else if (i == r8 + 1 || i == r1 - 1)
-        sprintf(s + strlen(s), " %c", j + 64);
-      else
-        sprintf(s + strlen(s), " %c", c);
-      if (j == A - 1 || j == H)
-        sprintf(s + strlen(s), "  ");
+      if (y != r8 + 1 && y != r1 - 1)
+      {
+        if (x == A - 1)
+          sprintf(s + strlen(s), "**");
+        if (x == A - 1 || x == H + 1)
+          sprintf(s + strlen(s), " %c", y + 48);
+        else
+          sprintf(s + strlen(s), " %c", c);
+        if (x == A - 1 || x == H)
+          sprintf(s + strlen(s), "  ");
+      }
     }
-    sprintf(s + strlen(s), "\n");
-    if (i == r8 + 1 || i == r1)
+    if (y != r8 + 1 && y != r1 - 1)
+      sprintf(s + strlen(s), "\n");
+    if (y == r8 + 1 || y == r1)
       sprintf(s + strlen(s), "** |                     |\n");
   }
-  sprintf(s + strlen(s), "** +=====================+\n** Trait : %d\n", p.trait);
+  sprintf(s + strlen(s), "** @== A B C D E F G H ==@\n** Trait : %d\n", p.trait);
   sprintf(s + strlen(s), "** En passant : %d\n", p.pep);
   sprintf(s + strlen(s), "** Coups : %.1f\n", p.ccoups);
   sprintf(s + strlen(s), "** Roque : %d\n", p.roques);
-  journal("", s, "", 1);
+  if (affich)
+    printf(s);
+  else
+    journal("", s, "", 1);
 }
 
 void afficherEval(struct MVar mv)

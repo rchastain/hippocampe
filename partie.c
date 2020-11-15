@@ -57,7 +57,7 @@ struct Position convFEN(char* codeFEN)
   p.pep = 0;
   p.ccoups = 0.0;
   p.roques = 0;
-  afficherPosition(p);
+  afficherPosition(p, 0);
   while (codeFEN[index] != 0)
   {
     if (codeFEN[index] == ' ')
@@ -149,7 +149,7 @@ struct Position convFEN(char* codeFEN)
   p.ccoups = (float)(iccoups) / 2;
   p.possibles = NULL;
   p.eval = VIDE;
-  afficherPosition(p);
+  afficherPosition(p, 0);
   return p;
 }
 

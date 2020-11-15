@@ -39,11 +39,7 @@ extern int prof_max;
 extern struct Partie enCours;
 extern struct Cadence cad;
 
-#ifdef __MINGW32__
 void *rechercher(struct Position *p)
-#else
-void *rechercher(struct Position *p)
-#endif
 {
   int i, prof_act = 1;
   int temps_ecoule = 0;
@@ -57,8 +53,8 @@ void *rechercher(struct Position *p)
 
   gettimeofday(&t0, NULL);
   tempsAlloue = allouer(cad, enCours.temps);
-  /* On fait une recherche, par un algorithme alpha-beta, sur des profondeurs
-   * croissantes */
+  /* Recherche, par un algorithme alpha-beta, sur une profondeur
+   * croissante */
   while (prof_act <= prof_max && !temps_ecoule)
   {
     //printf("%s%d%c", "Profondeur de recherche : ", prof_act, '\n');
@@ -92,14 +88,14 @@ void *rechercher(struct Position *p)
   {
     coup[4] = 'n';
   }
-
-  //printf("%s%c", coup, '\n');
+  
   strcat(chaine, coup);
   *p = entrerCoup(*p, mvprov.variante[0]);
-  afficherPosition(*p);
+  afficherPosition(*p, 0);
   envoi(chaine);
-  chercherCoups(p);
-  //printf("%s%d\n", "Nombre de coups possibles : ", p->nb_possibles);
+  
+  chercherCoups(p, 0);
+  //printf("Nombre de coups possibles : %d\n", p->nb_possibles);
   res = resultat(*p);
   if (res == 'B')
   {
@@ -142,13 +138,13 @@ struct MVar alphabeta(struct Position p, int prof, int niveau, short a, short b)
   {
     mv1.orig.eval = evalStat(p);
     mv1.orig.departage = rand();
-    //printf("%s%d%c", "dep=", mv1.orig.departage, '\n');
+    //printf("dep=%d\n", mv1.orig.departage);
     mv1.longueur = 0;
     return mv1;
   }
   else
   {
-    chercherCoups(&p);
+    chercherCoups(&p, 0);
     res = resultat(p);
     if (isupper(res)) /* car les résultats non définitifs ne sont pas représentés par une lettre majuscule */
     {
@@ -261,14 +257,12 @@ struct MVar alphabeta(struct Position p, int prof, int niveau, short a, short b)
   }
 }
 
-void chercherCoups(struct Position * p)
+void chercherCoups(struct Position * p, int affich)
 {
   int i, j;
-
+  
   p->possibles = malloc(200 * sizeof(struct Coup));
-  //printf("%x%c", p->possibles, '\n');
   p->nb_possibles = 0;
-  //printf("%s%d%s", "taille du tableau : ", sizeof(*(p->possibles)), " octets\n");
 
   for (i = A; i <= H; i++)
   {
@@ -297,13 +291,14 @@ void chercherCoups(struct Position * p)
       }
     }
   }
-  /*
-  printf("%s%d%c", "Nombre de coups : ", p->nb_possibles, '\n');
-  for (i = 0; i < p->nb_possibles; i++)
+  if (affich)
   {
-    printf("%s%d %s%d %s%d %s%d%c", "cd=", p->possibles[i].cd, "ld=", p->possibles[i].ld, "ca=", p->possibles[i].ca, "la=", p->possibles[i].la, '\n');
+    printf("Nombre de coups : %d\n", p->nb_possibles);
+    for (i = 0; i < p->nb_possibles; i++)
+    {
+      printf("%d%d%d%d\n", p->possibles[i].cd, p->possibles[i].ld, p->possibles[i].ca, p->possibles[i].la);
+    }
   }
-  */
 }
 
 short evalStat(struct Position p)
