@@ -211,6 +211,7 @@ void traiter(char *commande, int *protocole)
     )
     {
     }
+    /* Commandes personnalisées */
     else if (!strcmp(arg0, "board"))
     {
       afficherPosition(enCours.posAct, 1);
