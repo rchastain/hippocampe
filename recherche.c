@@ -39,7 +39,7 @@ extern int prof_max;
 extern struct Partie enCours;
 extern struct Cadence cad;
 
-void *rechercher(struct Position *p)
+void *rechercher(struct Position *p, int affich)
 {
   int i, prof_act = 1;
   int temps_ecoule = 0;
@@ -48,18 +48,18 @@ void *rechercher(struct Position *p)
   char coup[6], res;
   char chaine[12] = "move ";
 
-  //printf("%s%d\n", "trait=", p->trait);
-  //afficherPosition(p);
-
   gettimeofday(&t0, NULL);
   tempsAlloue = allouer(cad, enCours.temps);
+  
   /* Recherche, par un algorithme alpha-beta, sur une profondeur
    * croissante */
   while (prof_act <= prof_max && !temps_ecoule)
   {
-    //printf("%s%d%c", "Profondeur de recherche : ", prof_act, '\n');
-    mvprov = alphabeta(*p, prof_act, 0, -MAT, MAT);
-    //afficherEval(mvprov);
+    if (affich)
+      printf("Profondeur de recherche : %d\n", prof_act);
+    mvprov = alphabeta(*p, prof_act, 0, -MAT, MAT, 0);
+    if (affich)
+      afficherEval(mvprov, 1);
     temps_ecoule = alarme(t0, tempsAlloue);
     prof_act++;
   }
@@ -124,7 +124,7 @@ void *rechercher(struct Position *p)
   //enCours.couleur = AUCUNE;
 }
 
-struct MVar alphabeta(struct Position p, int prof, int niveau, short a, short b)
+struct MVar alphabeta(struct Position p, int prof, int niveau, short a, short b, int affich)
 {
   int i;
   struct MVar mv, mv1;
@@ -138,7 +138,8 @@ struct MVar alphabeta(struct Position p, int prof, int niveau, short a, short b)
   {
     mv1.orig.eval = evalStat(p);
     mv1.orig.departage = rand();
-    //printf("dep=%d\n", mv1.orig.departage);
+    if (affich)
+      printf("dep=%d\n", mv1.orig.departage);
     mv1.longueur = 0;
     return mv1;
   }
@@ -170,13 +171,15 @@ struct MVar alphabeta(struct Position p, int prof, int niveau, short a, short b)
     {
       for (i = 0; i < p.nb_possibles; i++)
       {
-        //printf("%s%d %s%d %s%d %s%d%c", "cd=", p.possibles[i].cd, "ld=", p.possibles[i].ld, "ca=", p.possibles[i].ca, "la=", p.possibles[i].la, '\n');
+        if (affich)
+          printf("%c%d%c%d\n", p.possibles[i].cd + 96, p.possibles[i].ld, p.possibles[i].ca + 96, p.possibles[i].la);
         p1 = entrerCoup(p, p.possibles[i]);
-        mv = alphabeta(p1, prof, niveau + 1, a, min(b, beta));
+        mv = alphabeta(p1, prof, niveau + 1, a, min(b, beta), affich);
 
         if (niveau <= 0)
         {
-          //printf("%s%d %s%d %c%c%c%c %s%d %s%d %s%d%c", "prof=", prof, "i=", i, 96 + p.possibles[i].cd, 48 + p.possibles[i].ld, 96 + p.possibles[i].ca, 48 + p.possibles[i].la, "eval=", mv.orig.eval, "alpha=", alpha, "beta=", beta, '\n');
+          if (affich)
+            printf("prof=%d i=%d %c%c%c%c eval=%d alpha=%d beta=%d\n", prof, i, 96 + p.possibles[i].cd, 48 + p.possibles[i].ld, 96 + p.possibles[i].ca, 48 + p.possibles[i].la, mv.orig.eval, alpha, beta);
         }
         if (mv.orig.eval < beta)
         {
@@ -185,12 +188,14 @@ struct MVar alphabeta(struct Position p, int prof, int niveau, short a, short b)
           meilleur = p.possibles[i];
           if (a > beta)
           {
-            //printf("%s%d %s%d %s%d %s%d%c", "cd=", meilleur.cd, "ld=", meilleur.ld, "ca=", meilleur.ca, "la=", meilleur.la, '\n');
+            if (affich)
+              printf("%c%d%c%d\n", meilleur.cd + 96, meilleur.ld, meilleur.ca + 96, meilleur.la);
             mv1 = ajouterCoup(&mv, meilleur);
             mv1.orig.eval = beta;
             mv1.orig.departage = refdep;
             p.nb_possibles = 0;
-            //afficherEval(mv1);
+            if (affich)
+              afficherEval(mv1, 1);
             free(p.possibles);
             return mv1;
           }
@@ -201,7 +206,8 @@ struct MVar alphabeta(struct Position p, int prof, int niveau, short a, short b)
           meilleur = p.possibles[i];
         }
       }
-      //printf("%s%d %s%d %s%d %s%d%c", "cd=", meilleur.cd, "ld=", meilleur.ld, "ca=", meilleur.ca, "la=", meilleur.la, '\n');
+      if (affich)
+        printf("%c%d%c%d\n", p.possibles[i].cd + 96, p.possibles[i].ld, p.possibles[i].ca + 96, p.possibles[i].la);
       mv1 = ajouterCoup(&mv, meilleur);
       mv1.orig.eval = beta;
       mv1.orig.departage = refdep;
@@ -214,13 +220,15 @@ struct MVar alphabeta(struct Position p, int prof, int niveau, short a, short b)
     {
       for (i = 0; i < p.nb_possibles; i++)
       {
-        //printf("%s%d %s%d %s%d %s%d%c", "cd=", p.possibles[i].cd, "ld=", p.possibles[i].ld, "ca=", p.possibles[i].ca, "la=", p.possibles[i].la, '\n');
+        if (affich)
+          printf("%c%d%c%d\n", p.possibles[i].cd + 96, p.possibles[i].ld, p.possibles[i].ca + 96, p.possibles[i].la);
         p1 = entrerCoup(p, p.possibles[i]);
-        mv = alphabeta(p1, prof, niveau + 1, max(a, alpha), b);
+        mv = alphabeta(p1, prof, niveau + 1, max(a, alpha), b, affich);
 
         if (niveau <= 0)
         {
-          //printf("%s%d %s%d %c%c%c%c %s%d %s%d %s%d%c", "prof=", prof, "i=", i, 96 + p.possibles[i].cd, 48 + p.possibles[i].ld, 96 + p.possibles[i].ca, 48 + p.possibles[i].la, "eval=", mv.orig.eval, "alpha=", alpha, "beta=", beta, '\n');
+          if (affich)
+            printf("prof=%d i=%d %c%c%c%c eval=%d alpha=%d beta=%d\n", prof, i, 96 + p.possibles[i].cd, 48 + p.possibles[i].ld, 96 + p.possibles[i].ca, 48 + p.possibles[i].la, mv.orig.eval, alpha, beta);
         }
         if (mv.orig.eval > alpha)
         {
@@ -229,12 +237,14 @@ struct MVar alphabeta(struct Position p, int prof, int niveau, short a, short b)
           meilleur = p.possibles[i];
           if (alpha > b)
           {
-            //printf("%s%d %s%d %s%d %s%d%c", "cd=", meilleur.cd, "ld=", meilleur.ld, "ca=", meilleur.ca, "la=", meilleur.la, '\n');
+            if (affich)
+              printf("%c%d%c%d\n", meilleur.cd + 96, meilleur.ld, meilleur.ca + 96, meilleur.la);
             mv1 = ajouterCoup(&mv, meilleur);
             mv1.orig.eval = alpha;
             mv1.orig.departage = refdep;
             p.nb_possibles = 0;
-            //afficherEval(mv1);
+            if (affich)
+              afficherEval(mv1, 1);
             free(p.possibles);
             return mv1;
           }
@@ -245,12 +255,14 @@ struct MVar alphabeta(struct Position p, int prof, int niveau, short a, short b)
           meilleur = p.possibles[i];
         }
       }
-      //printf("%s%d %s%d %s%d %s%d%c", "cd=", meilleur.cd, "ld=", meilleur.ld, "ca=", meilleur.ca, "la=", meilleur.la, '\n');
+      if (affich)
+        printf("%c%d%c%d\n", meilleur.cd + 96, meilleur.ld, meilleur.ca + 96, meilleur.la);
       mv1 = ajouterCoup(&mv, meilleur);
       mv1.orig.eval = alpha;
       mv1.orig.departage = refdep;
       p.nb_possibles = 0;
-      //afficherEval(mv1);
+      if (affich)
+        afficherEval(mv1, 1);
       free(p.possibles);
       return mv1;
     }
@@ -322,7 +334,6 @@ short evalStat(struct Position p)
       }
     }
   }
-  //afficherPosition(p);
-  //printf("%s%d%c", "evalpos : ", eval, '\n');
+  
   return eval;
 }

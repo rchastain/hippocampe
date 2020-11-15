@@ -109,7 +109,6 @@ void traiter(char *commande, int *protocole)
     }
     else if (!strcmp(arg0, "ping"))
     {
-      //printf("pong %d\n", atoi(extrait(&commande)));
       sprintf(s, "pong %d", atoi(extrait(&commande)));
       envoi(s);
     }
@@ -219,6 +218,10 @@ void traiter(char *commande, int *protocole)
     else if (!strcmp(arg0, "moves"))
     {
       chercherCoups(&enCours.posAct, 1);
+    }
+    else if (!strcmp(arg0, "search"))
+    {
+      rechercher(&enCours.posAct, 1);
     }
     else // Serait-ce un coup ?
     {

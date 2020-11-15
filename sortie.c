@@ -104,13 +104,20 @@ void afficherPosition(struct Position p, int affich)
     journal("", s, "", 1);
 }
 
-void afficherEval(struct MVar mv)
+void afficherEval(struct MVar mv, int affich)
 {
   int i;
-
-  //printf("eval=%d dep=%d\n", mv.orig.eval, mv.orig.departage);
+  char s[512] = "";
+  
+  sprintf(s + strlen(s), "eval=%d dep=%d\n", mv.orig.eval, mv.orig.departage);
+    
   for (i = 0; i < mv.longueur; i++)
   {
-    //printf("coup %d cd=%d ld=%d ca=%d la=%d\n", i, mv.variante[i].cd, mv.variante[i].ld, mv.variante[i].ca, mv.variante[i].la);
+    sprintf(s + strlen(s), "coup %d %c%d%c%d\n", i, mv.variante[i].cd + 96, mv.variante[i].ld, mv.variante[i].ca + 96, mv.variante[i].la);
   }
+  
+  if (affich)
+    printf(s);
+  else
+    journal("", s, "", 1);
 }

@@ -24,16 +24,9 @@
 #include "liste.h"
 #include "partie.h"
 
-#ifdef __MINGW32__
-/*#include <process.h>*/
-void *rechercher(struct Position *p);
-#else
-void *rechercher(struct Position *p);
-#endif
-
+void *rechercher(struct Position *p, int affich);
 typedef int EvalFunc[10];	    // valeurs des paramètres
-
-struct MVar alphabeta(struct Position p, int profondeur, int niveau, short a, short b);
+struct MVar alphabeta(struct Position p, int profondeur, int niveau, short a, short b, int affich);
 void chercherCoups(struct Position * p, int affich);
 short evalStat(struct Position p);
 
