@@ -78,6 +78,6 @@ struct Partie
 #define FAUX 0
 
 #define VERSION "0.4.2"
-#define REVISION "0.1"
+#define REVISION "0.2"
 
 #endif
