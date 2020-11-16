@@ -288,6 +288,7 @@ struct Position entrerCoup(struct Position p, struct Coup c)
     {
       p1.diagramme[p1.pep][(9 + p1.trait) / 2] = VIDE;
     }
+    p1.pep = 0;
     break;
   default:
     if (c.spec < 6)   /* Promotion */
