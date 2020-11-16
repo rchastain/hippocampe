@@ -288,7 +288,7 @@ void chercherCoups(struct Position * p, int affich)
   }
   if (affich)
   {
-    printf("Nombre de coups : %d\n", p->nb_possibles);
+    //printf("Nombre de coups : %d\n", p->nb_possibles);
     for (x = 0; x < p->nb_possibles; x++)
     {
       printf("%c%d%c%d ", p->possibles[x].cd + 96, p->possibles[x].ld, p->possibles[x].ca + 96, p->possibles[x].la);

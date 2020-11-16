@@ -200,6 +200,10 @@ void traiter(char *commande, int *protocole)
     {
       reglerAdv(NULL, ORDINATEUR);
     }
+    else if (!strcmp(arg0, "setboard"))
+    {
+      enCours.posAct = convFEN(commande);
+    }
     else if (
       !strcmp(arg0, "accepted") ||
       !strcmp(arg0, "easy") ||

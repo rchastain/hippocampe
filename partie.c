@@ -149,7 +149,7 @@ struct Position convFEN(char* codeFEN)
   p.ccoups = (float)(iccoups) / 2;
   p.possibles = NULL;
   p.eval = VIDE;
-  afficherPosition(p, 0);
+  //afficherPosition(p, 0);
   return p;
 }
 
