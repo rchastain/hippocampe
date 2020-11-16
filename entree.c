@@ -85,7 +85,7 @@ void traiter(char *commande, int *protocole)
   int i;
   char s[8] = "";
 
-  if (commande != NULL)
+  if (commande != NULL && strlen(commande) > 1)
   {
     journal("-> ", commande, "", 1);
 
@@ -218,10 +218,6 @@ void traiter(char *commande, int *protocole)
     else if (!strcmp(arg0, "moves"))
     {
       chercherCoups(&enCours.posAct, 1);
-    }
-    else if (!strcmp(arg0, "search"))
-    {
-      rechercher(&enCours.posAct, 1);
     }
     else // Serait-ce un coup ?
     {

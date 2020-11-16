@@ -94,10 +94,10 @@ void afficherPosition(struct Position p, int affich)
     if (y == r8 + 1 || y == r1)
       sprintf(s + strlen(s), "** |                     |\n");
   }
-  sprintf(s + strlen(s), "** @== A B C D E F G H ==@\n** Trait : %d\n", p.trait);
-  sprintf(s + strlen(s), "** En passant : %d\n", p.pep);
-  sprintf(s + strlen(s), "** Coups : %.1f\n", p.ccoups);
-  sprintf(s + strlen(s), "** Roque : %d\n", p.roques);
+  sprintf(s + strlen(s), "** @== A B C D E F G H ==@\n** Trait %d\n", p.trait);
+  sprintf(s + strlen(s), "** En passant %d\n", p.pep);
+  sprintf(s + strlen(s), "** Coups %.1f\n", p.ccoups);
+  sprintf(s + strlen(s), "** Roque %d\n", p.roques);
   if (affich)
     printf(s);
   else
