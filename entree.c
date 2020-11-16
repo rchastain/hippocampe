@@ -82,7 +82,6 @@ void traiter(char *commande, int *protocole)
   char *arg0 = NULL, *arg1;
   char *base;
   float tempsAlloue;
-  int i;
   char s[8] = "";
 
   if (commande != NULL && strlen(commande) > 1)

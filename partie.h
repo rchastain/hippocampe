@@ -22,6 +22,7 @@
 #define PARTIE_H
 
 #include <stdio.h>
+
 #include "hippocampe.h"
 #include "recherche.h"
 #include "temps.h"

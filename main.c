@@ -39,7 +39,12 @@ struct Cadence cad;
 
 int main(int argc, char** argv)
 {
-  fjournal = fopen("hippocampe.log", "w+");
+#ifdef __i386__
+  char cjournal[] = "hippocampe32.log";
+#else
+  char cjournal[] = "hippocampe.log";
+#endif
+  fjournal = fopen(cjournal, "w+");
   journal("** ", "Démarrage d'Hippocampe", "\n", 1);
   srand(time(NULL));
   attendre();

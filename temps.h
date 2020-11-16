@@ -33,10 +33,10 @@
 
 struct Cadence
 {
-  int base1;		// temps de base (en secondes)
-  int inc;		// incrément en secondes
-  int n1;		// nombre de coups (1er contrôle)
-  //int base2;		// temps de base 2ème contrôle
+  int base1; // temps de base (en secondes)
+  int inc;   // incrément en secondes
+  int n1;    // nombre de coups (1er contrôle)
+  //int base2;
   //int n2;
   //int base3;
 };

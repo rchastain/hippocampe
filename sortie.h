@@ -22,7 +22,7 @@
 #define SORTIE_H
 
 void envoi(char *message);
-void journal(char *avant, char *ligne, char *apres, int flush);
+void journal(char *prefixe, char *texte, char *suffixe, int flush);
 void afficherPosition(struct Position p, int affich);
 void afficherEval(struct MVar mv, int affich);
 

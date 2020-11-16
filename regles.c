@@ -18,13 +18,13 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "liste.h"
 #include "regles.h"
 #include "partie.h"
 #include "hippocampe.h"
-
-#include <stdio.h>
-#include <stdlib.h>
 
 short depVer[8] = {1, 1, 0,-1,-1,-1, 0, 1};
 short depHor[8] = {0, 1, 1, 1, 0,-1,-1,-1};

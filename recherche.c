@@ -18,18 +18,18 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
-#include "hippocampe.h"
-#include "regles.h"
-#include "recherche.h"
-#include "sortie.h"
-#include "temps.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
 #include <sys/time.h>
 #include <time.h>
+
+#include "hippocampe.h"
+#include "regles.h"
+#include "recherche.h"
+#include "sortie.h"
+#include "temps.h"
 
 #define min(a, b) ((a < b) ? a : b)
 #define max(a, b) ((a > b) ? a : b)
@@ -41,7 +41,7 @@ extern struct Cadence cad;
 
 void *rechercher(struct Position *p)
 {
-  int i, prof_act = 1;
+  int prof_act = 1;
   int temps_ecoule = 0;
   float tempsAlloue;
   struct timeval t0;
