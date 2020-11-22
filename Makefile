@@ -5,7 +5,11 @@ CFLAGS=
 all: hippocampe
 
 hippocampe: main.o entree.o liste.o partie.o recherche.o regles.o sortie.o temps.o
+ifeq ($(OS),Windows_NT)
+	$(CC) -o hippocampe.exe main.o entree.o liste.o partie.o recherche.o regles.o sortie.o temps.o $(LDFLAGS)
+else
 	$(CC) -o hippocampe main.o entree.o liste.o partie.o recherche.o regles.o sortie.o temps.o $(LDFLAGS)
+endif
 
 main.o: main.c hippocampe.h entree.h sortie.h temps.h
 	$(CC) -o main.o -c main.c $(CFLAGS)
@@ -32,4 +36,8 @@ temps.o: temps.c hippocampe.h sortie.h temps.h entree.h
 	$(CC) -o temps.o -c temps.c $(CFLAGS)
 
 clean:
+ifeq ($(OS),Windows_NT)
+	del /q *.o
+else
 	rm -rf *.o
+endif
